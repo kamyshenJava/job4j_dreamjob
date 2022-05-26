@@ -5,17 +5,13 @@ import ru.job4j.dreamjob.model.Post;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PostStore {
-
     private static final PostStore INST = new PostStore();
-
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final AtomicInteger index = new AtomicInteger(1);
-
     private PostStore() {
         add(new Post("Junior Java Job", "only for students"));
         add(new Post("Middle Java Job", "for experienced programmers"));

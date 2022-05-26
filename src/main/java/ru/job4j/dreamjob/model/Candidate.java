@@ -8,11 +8,9 @@ public class Candidate {
     private String name;
     private String description;
     private LocalDate created;
-    public Candidate(int id, String name, String description, LocalDate created) {
-        this.id = id;
+    public Candidate(String name, String description) {
         this.name = name;
         this.description = description;
-        this.created = created;
     }
 
     public int getId() {
