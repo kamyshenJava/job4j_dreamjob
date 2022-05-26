@@ -9,11 +9,9 @@ public class Post {
     private String description;
     private LocalDate created;
     public Post() { }
-    public Post(int id, String name, String description, LocalDate created) {
-        this.id = id;
+    public Post(String name, String description) {
         this.name = name;
         this.description = description;
-        this.created = created;
     }
     public int getId() {
         return id;
