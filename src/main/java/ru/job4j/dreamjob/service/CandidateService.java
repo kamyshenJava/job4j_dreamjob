@@ -31,4 +31,7 @@ public class CandidateService {
     public void update(Candidate candidate) {
         candidateStore.update(candidate);
     }
+    public void updatePhoto(Candidate candidate) {
+        candidateStore.updatePhoto(candidate);
+    }
 }

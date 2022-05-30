@@ -1,6 +1,8 @@
 package ru.job4j.dreamjob.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
 
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Repository
 public class CandidateDbStore {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CandidateDbStore.class.getName());
     private final BasicDataSource pool;
 
     public CandidateDbStore(BasicDataSource pool) {
@@ -29,7 +33,7 @@ public class CandidateDbStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in CandidateDbStore", e);
         }
         return candidates;
     }
@@ -52,7 +56,7 @@ public class CandidateDbStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in CandidateDbStore", e);
         }
         return candidate;
     }
@@ -69,7 +73,7 @@ public class CandidateDbStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in CandidateDbStore", e);
         }
         return rsl;
     }
@@ -77,15 +81,25 @@ public class CandidateDbStore {
     public void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
         PreparedStatement ps = cn.prepareStatement(
-                "UPDATE candidate SET name = ?, description = ?, created = ?, photo = ? WHERE id = ?")) {
+                "UPDATE candidate SET name = ?, description = ? WHERE id = ?")) {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDescription());
-            ps.setDate(3, Date.valueOf(candidate.getCreated()));
-            ps.setBytes(4, candidate.getPhoto());
-            ps.setInt(5, candidate.getId());
+            ps.setInt(3, candidate.getId());
             ps.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in CandidateDbStore", e);
+        }
+    }
+
+    public void updatePhoto(Candidate candidate) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE candidate SET photo = ? WHERE id = ?")) {
+            ps.setBytes(1, candidate.getPhoto());
+            ps.setInt(2, candidate.getId());
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error("Exception in CandidateDbStore", e);
         }
     }
 }
