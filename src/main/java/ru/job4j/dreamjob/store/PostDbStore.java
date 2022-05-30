@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class PostDBStore {
+public class PostDbStore {
 
     private final BasicDataSource pool;
 
-    public PostDBStore(BasicDataSource pool) {
+    public PostDbStore(BasicDataSource pool) {
         this.pool = pool;
     }
 
@@ -89,7 +89,7 @@ public class PostDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    rsl = new Post(it.getInt("id"), it.getString("name"),
+                    rsl = new Post(id, it.getString("name"),
                             it.getString("description"), it.getDate("created").toLocalDate(),
                             new City(it.getInt("city_id")), it.getBoolean("visible"));
                 }
