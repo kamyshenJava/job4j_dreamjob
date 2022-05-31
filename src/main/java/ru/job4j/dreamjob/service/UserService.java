@@ -15,10 +15,10 @@ public class UserService {
     }
 
     public Optional<User> add(User user) {
-        return Optional.empty();
+        return Optional.ofNullable(userDbStore.add(user));
     }
 
     public Optional<User> findUserByEmailAndPwd(String email, String password) {
-        return Optional.empty();
+        return Optional.ofNullable(userDbStore.findUserByEmailAndPwd(email, password));
     }
 }

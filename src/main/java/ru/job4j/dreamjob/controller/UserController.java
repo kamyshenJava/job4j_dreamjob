@@ -28,11 +28,12 @@ public class UserController {
     @PostMapping("/registration")
     public String registration(Model model, @ModelAttribute User user) {
         Optional<User> regUser = userService.add(user);
+        String rsl = "redirect:/loginPage";
         if (regUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
-            return "redirect:/fail";
+            rsl = "redirect:/fail";
         }
-        return "redirect:/success";
+        return rsl;
     }
 
     @GetMapping("/loginPage")
@@ -46,9 +47,14 @@ public class UserController {
         Optional<User> userDb = userService.findUserByEmailAndPwd(
                 user.getEmail(), user.getPassword()
         );
+        String rsl = "redirect:/index";
         if (userDb.isEmpty()) {
-            return "redirect:/loginPage?fail=true";
+            rsl = "redirect:/loginPage?fail=true";
         }
-        return "redirect:/index";
+        return rsl;
+    }
+    @GetMapping("/fail")
+    public String fail(Model model) {
+        return "fail";
     }
 }
