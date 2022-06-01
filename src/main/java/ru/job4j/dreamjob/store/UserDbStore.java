@@ -9,6 +9,7 @@ import ru.job4j.dreamjob.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Optional;
 
 @Repository
 public class UserDbStore {
@@ -20,7 +21,7 @@ public class UserDbStore {
         this.pool = pool;
     }
 
-    public User add(User user) {
+    public Optional<User> add(User user) {
         User rsl = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
@@ -37,10 +38,10 @@ public class UserDbStore {
         } catch (Exception e) {
             LOG.error("Exception in UserDbStore", e);
         }
-        return rsl;
+        return Optional.ofNullable(rsl);
     }
 
-    public User findUserByEmailAndPwd(String email, String password) {
+    public Optional<User> findUserByEmailAndPwd(String email, String password) {
         User rsl = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?")) {
@@ -55,6 +56,6 @@ public class UserDbStore {
         } catch (Exception e) {
             LOG.error("Exception in UserDbStore", e);
         }
-        return rsl;
+        return Optional.ofNullable(rsl);
     }
 }
