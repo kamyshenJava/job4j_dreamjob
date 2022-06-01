@@ -25,9 +25,11 @@ public class UserDbStore {
         User rsl = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "INSERT INTO users(email, password) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
+                     "INSERT INTO users(name, email, password) VALUES (?, ?, ?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
             ps.execute();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -49,8 +51,8 @@ public class UserDbStore {
             ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    rsl = new User(rs.getInt("id"), rs.getString("email"),
-                            rs.getString("password"));
+                    rsl = new User(rs.getInt("id"), rs.getString("name"),
+                            rs.getString("email"), rs.getString("password"));
                 }
             }
         } catch (Exception e) {
